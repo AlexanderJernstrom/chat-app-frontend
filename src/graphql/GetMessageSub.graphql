@@ -1,0 +1,11 @@
+subscription GetMessagesSub($channelId: String!) {
+  getMessage(channelId: $channelId) {
+    body
+    user {
+      name
+      id
+    }
+    channelId
+    createdAt
+  }
+}

@@ -1,0 +1,11 @@
+query GetMessages($channelId: String!) {
+  getMessages(channelId: $channelId) {
+    body
+    id
+    user {
+      id
+      name
+    }
+    createdAt
+  }
+}

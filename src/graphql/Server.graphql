@@ -1,0 +1,23 @@
+query GetServer($id: String!) {
+  getServer(id: $id) {
+    server {
+      name
+    }
+    channels {
+      id
+      name
+    }
+    messages {
+      body
+      user {
+        name
+      }
+      channelId
+      createdAt
+    }
+  }
+  getMembersInServer(serverId: $id) {
+    name
+    id
+  }
+}

@@ -1,0 +1,6 @@
+query GetServers {
+  getServers {
+    id
+    name
+  }
+}
