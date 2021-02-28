@@ -121,7 +121,7 @@ export type MutationCreateServerArgs = {
 
 export type MutationInviteMemberArgs = {
   serverId: Scalars['String'];
-  userId: Scalars['String'];
+  email: Scalars['String'];
 };
 
 
@@ -150,6 +150,16 @@ export type Subscription = {
 export type SubscriptionGetMessageArgs = {
   channelId: Scalars['String'];
 };
+
+export type CreateServerMutationVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type CreateServerMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createServer'>
+);
 
 export type GetMessagesSubSubscriptionVariables = Exact<{
   channelId: Scalars['String'];
@@ -183,6 +193,17 @@ export type GetMessagesQuery = (
       & Pick<User, 'id' | 'name'>
     ) }
   )> }
+);
+
+export type InviteMemberMutationVariables = Exact<{
+  email: Scalars['String'];
+  serverId: Scalars['String'];
+}>;
+
+
+export type InviteMemberMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'inviteMember'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -266,6 +287,36 @@ export type CreateUserMutation = (
 );
 
 
+export const CreateServerDocument = gql`
+    mutation CreateServer($name: String!) {
+  createServer(name: $name)
+}
+    `;
+export type CreateServerMutationFn = Apollo.MutationFunction<CreateServerMutation, CreateServerMutationVariables>;
+
+/**
+ * __useCreateServerMutation__
+ *
+ * To run a mutation, you first call `useCreateServerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateServerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createServerMutation, { data, loading, error }] = useCreateServerMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useCreateServerMutation(baseOptions?: Apollo.MutationHookOptions<CreateServerMutation, CreateServerMutationVariables>) {
+        return Apollo.useMutation<CreateServerMutation, CreateServerMutationVariables>(CreateServerDocument, baseOptions);
+      }
+export type CreateServerMutationHookResult = ReturnType<typeof useCreateServerMutation>;
+export type CreateServerMutationResult = Apollo.MutationResult<CreateServerMutation>;
+export type CreateServerMutationOptions = Apollo.BaseMutationOptions<CreateServerMutation, CreateServerMutationVariables>;
 export const GetMessagesSubDocument = gql`
     subscription GetMessagesSub($channelId: String!) {
   getMessage(channelId: $channelId) {
@@ -340,6 +391,37 @@ export function useGetMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetMessagesQueryHookResult = ReturnType<typeof useGetMessagesQuery>;
 export type GetMessagesLazyQueryHookResult = ReturnType<typeof useGetMessagesLazyQuery>;
 export type GetMessagesQueryResult = Apollo.QueryResult<GetMessagesQuery, GetMessagesQueryVariables>;
+export const InviteMemberDocument = gql`
+    mutation InviteMember($email: String!, $serverId: String!) {
+  inviteMember(email: $email, serverId: $serverId)
+}
+    `;
+export type InviteMemberMutationFn = Apollo.MutationFunction<InviteMemberMutation, InviteMemberMutationVariables>;
+
+/**
+ * __useInviteMemberMutation__
+ *
+ * To run a mutation, you first call `useInviteMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInviteMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [inviteMemberMutation, { data, loading, error }] = useInviteMemberMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      serverId: // value for 'serverId'
+ *   },
+ * });
+ */
+export function useInviteMemberMutation(baseOptions?: Apollo.MutationHookOptions<InviteMemberMutation, InviteMemberMutationVariables>) {
+        return Apollo.useMutation<InviteMemberMutation, InviteMemberMutationVariables>(InviteMemberDocument, baseOptions);
+      }
+export type InviteMemberMutationHookResult = ReturnType<typeof useInviteMemberMutation>;
+export type InviteMemberMutationResult = Apollo.MutationResult<InviteMemberMutation>;
+export type InviteMemberMutationOptions = Apollo.BaseMutationOptions<InviteMemberMutation, InviteMemberMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

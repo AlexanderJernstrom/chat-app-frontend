@@ -1,11 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useGetServerQuery } from "../generated/graphql";
+import {
+  useGetServerQuery,
+  useInviteMemberMutation,
+} from "../generated/graphql";
 import { useStore } from "../store/store";
 import { Channel } from "./Channel";
 import "../Channel.css";
 
 export const Server = (props: any) => {
+  const [text, setText] = useState("");
   const { data, loading, error } = useGetServerQuery({
     context: {
       headers: {
@@ -16,8 +20,20 @@ export const Server = (props: any) => {
       id: props.match.params.id,
     },
     onCompleted: (data) => {
+      console.log(data);
       selectChannel(data.getServer.channels[0].id);
     },
+  });
+
+  const [invite] = useInviteMemberMutation({
+    update: (_, { data }) => {
+      if (data?.inviteMember === true) {
+        window.location.reload();
+      } else if (data?.inviteMember === false) {
+        alert("Something went wrong, please try again");
+      }
+    },
+    context: { headers: { token: localStorage.getItem("authorization") } },
   });
 
   const selectedChannel = useStore((state) => state.selectedChannel);
@@ -62,7 +78,20 @@ export const Server = (props: any) => {
               </div>
             );
           })}
+          <input
+            style={{
+              width: "100%",
+              borderTop: "none",
+              borderLeft: "none",
+              borderRight: "none",
+              outline: "none",
+              backgroundColor: "transparent",
+              color: "white",
+            }}
+            placeholder="Name of the channel you want to create"
+          />
         </div>
+
         {loading ? (
           <p>...loading</p>
         ) : (
@@ -90,6 +119,29 @@ export const Server = (props: any) => {
               </div>
             );
           })}
+          <div style={{ marginLeft: "2%" }}>
+            <label>Invite user</label>
+            <div>
+              <input
+                placeholder="Users email"
+                onChange={(e) => setText(e.target.value)}
+                style={{ width: "60%" }}
+              />
+              <button
+                style={{ width: "35%" }}
+                onClick={() =>
+                  invite({
+                    variables: {
+                      email: text,
+                      serverId: props.match.params.id,
+                    },
+                  })
+                }
+              >
+                Invite user
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

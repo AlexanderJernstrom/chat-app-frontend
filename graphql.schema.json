@@ -828,7 +828,7 @@
                 "defaultValue": null
               },
               {
-                "name": "userId",
+                "name": "email",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",

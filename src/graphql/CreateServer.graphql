@@ -1,0 +1,3 @@
+mutation CreateServer($name: String!) {
+  createServer(name: $name)
+}

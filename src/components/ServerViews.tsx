@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useGetServersQuery } from "../generated/graphql";
+import {
+  useGetServersQuery,
+  useCreateServerMutation,
+} from "../generated/graphql";
 
 export const ServerViews = () => {
   const { data, error, loading } = useGetServersQuery({
     context: { headers: { token: localStorage.getItem("authorization") } },
   });
+
+  const [createServer] = useCreateServerMutation({
+    context: { headers: { token: localStorage.getItem("authorization") } },
+  });
+  const [text, setText] = useState("");
 
   return (
     <div>
@@ -46,6 +54,25 @@ export const ServerViews = () => {
           </div>
         ))}
       </div>
+      <input
+        style={{
+          borderLeft: "none",
+          borderRight: "none",
+          borderTop: "none",
+          outline: "none",
+          backgroundColor: "transparent",
+          color: "white",
+        }}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Name of server"
+      />
+      <button
+        onClick={() => {
+          createServer({ variables: { name: text } });
+        }}
+      >
+        Create a new server
+      </button>
     </div>
   );
 };
