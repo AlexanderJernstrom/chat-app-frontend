@@ -18,7 +18,7 @@ const httpLink = new HttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://chat-app-server.vercel.app/graphql",
+  uri: "https://chat-app-server.vercel.app/graphql",
   options: {
     reconnect: true,
     connectionParams: {
